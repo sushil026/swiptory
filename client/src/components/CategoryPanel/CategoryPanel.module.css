@@ -1,0 +1,60 @@
+.panel {
+  margin-top: 1.5rem;
+  padding: 1rem 2rem;
+  display: flex;
+  height: fit-content;
+  font-family: 'DM sans';
+  font-size: large;
+}
+
+.categoryContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  gap: 2rem;
+}
+
+.card {
+  width: 14rem;
+  height: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 2rem;
+  transition: transform 0.1s ease;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.card h3{
+  background-color: rgb(0, 0, 0, 0.5);
+}
+
+.card:hover {
+  transform: scale(1.08);
+  border: 2px solid red;
+}
+
+h3 {
+  color: white;
+  margin-bottom: 10px;
+}
+
+@media only screen  and (max-width: 860px){
+  .panel{
+    background: transparent;
+    overflow: auto;
+    font-size: medium;
+  }
+
+  .categoryContainer{
+    width: auto;
+  }
+
+  .card{
+    max-width: 8rem;
+    max-height: 4rem;
+  }
+}
