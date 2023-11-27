@@ -1,15 +1,15 @@
 .navbar {
-  height: 5%;
+  height: 4%;
   display: flex;
   align-items: center;
-  padding: 1rem 4rem;
+  padding: 0.5rem 4rem;
   justify-content: space-between;
   box-shadow: 0px 15px 20px -20px #111;
   font-family: "DM Sans", sans-serif;
 }
 
 .logo {
-  font-size: 2.8rem;
+  font-size: 2.5rem;
   letter-spacing: 0.15rem;
 }
 
@@ -48,11 +48,11 @@
   letter-spacing: 0.05rem;
   font-size: larger;
   text-align: center;
-  width: 10rem;
+  width: 9rem;
   background: #ff7373;
   color: rgb(255, 255, 255);
   text-shadow: 0 0 0.8rem #000;
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 0.8rem;
   border-radius: 4rem;
   scale: 1;
   transition: scale 100ms;

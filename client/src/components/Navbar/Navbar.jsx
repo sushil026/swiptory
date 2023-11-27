@@ -1,4 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../../UserContext";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import hamburger from "../../assets/hamburger.svg";
 import cross from "../../assets/cross.svg";
 import bookmark from "../../assets/bookmark.svg";
@@ -13,7 +17,7 @@ const Button = ({ text, background, icon, onClick }) => (
   </div>
 );
 
-const HamburgerMenu = ({ isLoggedIn, username, onButtonClick }) => (
+const HamburgerMenu = ({ isLoggedIn, username, onButtonClick, onLogout }) => (
   <>
     {isLoggedIn ? (
       <div className={nbStyle.hamburgerMenu}>
@@ -24,7 +28,7 @@ const HamburgerMenu = ({ isLoggedIn, username, onButtonClick }) => (
         <Button text="Your Story" />
         <Button icon={bookmark} text="&nbsp; Bookmark" />
         <Button text="Add Story" />
-        <Button text="Logout" />
+        <Button text="Logout" onClick={onLogout}/>
       </div>
     ) : (
       <div className={nbStyle.hamburgerMenu} style={{ height: "15%" }}>
@@ -43,34 +47,48 @@ const HamburgerMenu = ({ isLoggedIn, username, onButtonClick }) => (
   </>
 );
 
-const LogoutMenu = ({ username, onLogout }) => (
-  <div className={nbStyle.logoutMenu}>
-    <h3 style={{color: 'black'}}>{username}</h3>
+const LogoutMenu = ({ username, onLogout, onMouseLeave }) => (
+  <div className={nbStyle.logoutMenu} onMouseLeave={onMouseLeave}>
+    <h3 style={{ color: "black" }}>{username}</h3>
     <Button text="Logout" style={{ width: "8rem" }} onClick={onLogout} />
   </div>
 );
 
-export default function Navbar() {
+export default function Navbar(prop) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const isLoggedIn = !false;
+  const isLoggedIn = prop.isLoggedIn;
   const [logoutMenu, setLogoutMenu] = useState(false);
   const [registerOrLogin, setRegisterOrLogin] = useState(null);
+  const { username, setUsername, setId } = useContext(UserContext);
+  username ? console.log("logged in") : console.log("not");
+  const mouseLeave = () => {
+    setTimeout(() => {
+      setLogoutMenu(false);
+    }, 1000);
+  };
 
   const handleButtonClick = (action) => {
     setRegisterOrLogin(action);
+    setIsMenuOpen(false);
   };
 
   const handleLogout = () => {
+    axios.post("/logout");
+    setId(null);
+    toaster();
+    setUsername(null);
     setLogoutMenu(false);
+    setIsMenuOpen(false);
   };
+
+  function toaster() {
+    toast.error(username + " logged out successfully", { position: toast.POSITION.TOP_CENTER, icon: ''});
+  }
 
   return (
     <div className={nbStyle.navbar}>
       <strong className={nbStyle.logo}>SwipTory</strong>
-
       {isLoggedIn ? (
-        // Rendered when user is logged in
         <div className={nbStyle.logged}>
           <div className={nbStyle.btns}>
             <Button icon={bookmark} text="&nbsp;Bookmarks" />
@@ -99,24 +117,34 @@ export default function Navbar() {
           setIsMenuOpen(!isMenuOpen);
         }}
       >
-        {isMenuOpen ? <img src={cross} alt="cross" /> : <img src={hamburger} alt="ham"/>}
+        {isMenuOpen ? (
+          <img src={cross} alt="cross" />
+        ) : (
+          <img src={hamburger} alt="ham" />
+        )}
       </div>
 
       {isMenuOpen && (
         <HamburgerMenu
           isLoggedIn={isLoggedIn}
-          username="username123"
+          username={username}
+          onLogout={handleLogout}
           onButtonClick={handleButtonClick}
         />
       )}
 
       {logoutMenu && (
-        <LogoutMenu username="username123" onLogout={handleLogout} />
+        <LogoutMenu
+          username={username}
+          onLogout={handleLogout}
+          onMouseLeave={mouseLeave}
+        />
       )}
 
-      <RegisterLoginForm formType={registerOrLogin} open={()=>setRegisterOrLogin(null)}/>
-
-
+      <RegisterLoginForm
+        formType={registerOrLogin}
+        open={() => setRegisterOrLogin(null)}
+      />
     </div>
   );
 }

@@ -9,38 +9,36 @@
 
 .categoryContainer {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   width: 100%;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .card {
-  width: 14rem;
+  width: 18rem;
   height: 7rem;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
   border-radius: 2rem;
-  transition: transform 0.1s ease;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 }
 
-.card h3{
+.card span{
+  color: white;
   background-color: rgb(0, 0, 0, 0.5);
 }
 
 .card:hover {
-  transform: scale(1.08);
-  border: 2px solid red;
+  box-shadow: 0px 0px 15px 20px rgba(0,0,0,0.1),0px 10px 15px -3px rgba(0,0,0,0.2);
 }
 
-h3 {
-  color: white;
+/* h3 {
   margin-bottom: 10px;
-}
+} */
 
 @media only screen  and (max-width: 860px){
   .panel{

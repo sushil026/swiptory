@@ -1,13 +1,17 @@
-import { useState } from "react";
-import Navbar from "./components/Navbar/Navbar";
-import CatagoryPanel from "./components/CategoryPanel/CategoryPanel";
+import axios from "axios";
+import Routes from "./Routes";
+import { UserContextProvider } from "./UserContext";
+import {ToastContainer} from 'react-toastify'
 
 function App() {
+  axios.defaults.baseURL = "http://localhost:4000";
+  axios.defaults.withCredentials = true;
+
   return (
-    <div className="App" style={{height: '100vh', width: '100%'}}>
-      <Navbar/>
-      <CatagoryPanel/>
-    </div>
+    <UserContextProvider>
+      <ToastContainer />
+      <Routes />
+    </UserContextProvider>
   );
 }
 

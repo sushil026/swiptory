@@ -1,22 +1,36 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import cut from "../../assets/cut.svg";
 import formStyle from "./RegisterLoginForm.module.css";
 import visible from "../../assets/visible.svg";
 import invisible from "../../assets/not-visible.svg";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { UserContext } from "../../UserContext";
 
 const RegisterLoginForm = ({ formType, open }) => {
-  const [username, setUsername] = useState("");
+  const [username, setFormUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isVisible, setIsVisible] = useState(false);
 
-  const handleSubmit = () => {
-    // Add your submit logic here using the username and password state values
-    console.log("Username:", username);
-    console.log("Password:", password);
-    // Reset the form after submission if needed
-    setUsername("");
+  const { setUsername, setId } = useContext(UserContext);
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    const url = formType === "register" ? "register" : "login";
+    const { data } = await axios.post(url, { username, password });
+    setUsername(username);
+    setId(data.id);
+    setFormUsername("");
     setPassword("");
-  };
+    toaster(formType);
+    open();
+  }
+  function toaster(action) {
+    action === "register"
+      ? toast.error(username + " registered successfully", { position: toast.POSITION.TOP_CENTER, icon: ''})
+      : toast.info(username + " signed in successfully", { position: toast.POSITION.TOP_CENTER, icon: '' });
+  }
 
   if (formType === null) {
     return null;
@@ -36,7 +50,7 @@ const RegisterLoginForm = ({ formType, open }) => {
             type="text"
             value={username}
             placeholder="username"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setFormUsername(e.target.value)}
           />
         </div>
         <div className={formStyle.inputs}>
