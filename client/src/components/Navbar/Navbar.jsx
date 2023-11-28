@@ -1,14 +1,15 @@
-import { useContext, useState } from "react";
-import { UserContext } from "../../UserContext";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import hamburger from "../../assets/hamburger.svg";
 import cross from "../../assets/cross.svg";
+import dp from "../../assets/Mask-group.png";
+import hamburger from "../../assets/hamburger.svg";
 import bookmark from "../../assets/bookmark.svg";
 import nbStyle from "./Navbar.module.css";
-import dp from "../../assets/Mask-group.png";
 import RegisterLoginForm from "../RegisterLoginForm/RegisterLoginForm";
+import { UserContext } from "../../UserContext";
 
 const Button = ({ text, background, icon, onClick }) => (
   <div className={nbStyle.buttons} style={{ background }} onClick={onClick}>
@@ -17,7 +18,7 @@ const Button = ({ text, background, icon, onClick }) => (
   </div>
 );
 
-const HamburgerMenu = ({ isLoggedIn, username, onButtonClick, onLogout }) => (
+const HamburgerMenu = ({ isLoggedIn, username, onButtonClick, onLogout, closeMenu }) => (
   <>
     {isLoggedIn ? (
       <div className={nbStyle.hamburgerMenu}>
@@ -26,9 +27,11 @@ const HamburgerMenu = ({ isLoggedIn, username, onButtonClick, onLogout }) => (
           <h3>{username}</h3>
         </div>
         <Button text="Your Story" />
-        <Button icon={bookmark} text="&nbsp; Bookmark" />
+        <Link to="/bookmarks" className={nbStyle.links}>
+          <Button icon={bookmark} text="&nbsp;Bookmarks" onClick={closeMenu} />
+        </Link>
         <Button text="Add Story" />
-        <Button text="Logout" onClick={onLogout}/>
+        <Button text="Logout" onClick={onLogout} />
       </div>
     ) : (
       <div className={nbStyle.hamburgerMenu} style={{ height: "15%" }}>
@@ -54,13 +57,14 @@ const LogoutMenu = ({ username, onLogout, onMouseLeave }) => (
   </div>
 );
 
-export default function Navbar(prop) {
+export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isLoggedIn = prop.isLoggedIn;
   const [logoutMenu, setLogoutMenu] = useState(false);
   const [registerOrLogin, setRegisterOrLogin] = useState(null);
   const { username, setUsername, setId } = useContext(UserContext);
-  username ? console.log("logged in") : console.log("not");
+  const isLoggedIn = username ? true : false;
+  const navigate = useNavigate();
+
   const mouseLeave = () => {
     setTimeout(() => {
       setLogoutMenu(false);
@@ -79,10 +83,18 @@ export default function Navbar(prop) {
     setUsername(null);
     setLogoutMenu(false);
     setIsMenuOpen(false);
+    navigate("/");
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
 
   function toaster() {
-    toast.error(username + " logged out successfully", { position: toast.POSITION.TOP_CENTER, icon: ''});
+    toast.error(username + " logged out successfully", {
+      position: toast.POSITION.BOTTOM_LEFT,
+      icon: "",
+    });
   }
 
   return (
@@ -91,8 +103,10 @@ export default function Navbar(prop) {
       {isLoggedIn ? (
         <div className={nbStyle.logged}>
           <div className={nbStyle.btns}>
-            <Button icon={bookmark} text="&nbsp;Bookmarks" />
-            <Button text="Your Stories" />
+            <Link to="/bookmarks" className={nbStyle.links}>
+              <Button icon={bookmark} text="&nbsp;Bookmarks" />
+            </Link>
+            <Button text="Add Story" />
           </div>
           <img src={dp} alt="dp" onClick={() => setLogoutMenu(!logoutMenu)} />
         </div>
@@ -130,6 +144,7 @@ export default function Navbar(prop) {
           username={username}
           onLogout={handleLogout}
           onButtonClick={handleButtonClick}
+          closeMenu={closeMenu}
         />
       )}
 
@@ -148,3 +163,4 @@ export default function Navbar(prop) {
     </div>
   );
 }
+

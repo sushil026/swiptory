@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import cpStyle from "./CategoryPanel.module.css";
+import { UserContext } from "../../UserContext";
+
+
 const All = require("../../assets/categories/all.jpg");
 const Food = require("../../assets/categories/food.jpeg");
 const Health = require("../../assets/categories/health.jpeg");
@@ -32,7 +35,7 @@ const Category = ({ title, url, setSelectedCategory, selected }) => {
 };
 
 const CatagoryPanel = () => {
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const { selectedCategory, setSelectedCategory} = useContext(UserContext);
   return (
     <div className={cpStyle.panel}>
       <div className={cpStyle.categoryContainer}>

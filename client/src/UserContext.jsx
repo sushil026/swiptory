@@ -5,6 +5,7 @@ export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
   const [username, setUsername] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const [id, setId] = useState(null);
 
   useEffect(() => {
@@ -14,8 +15,10 @@ export function UserContextProvider({ children }) {
     })
   }, []);
 
+  // console.log(username, id)
+
   return (
-    <UserContext.Provider value={{ username, setUsername, id, setId }}>
+    <UserContext.Provider value={{ username, setUsername, id, setId, selectedCategory, setSelectedCategory }}>
       {children}
     </UserContext.Provider>
   );
