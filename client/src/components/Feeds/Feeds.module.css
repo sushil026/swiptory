@@ -1,6 +1,6 @@
 .feedPanel {
   height: fit-content;
-  width: auto;
+  width: 90%;
   padding: 1rem;
   margin: 0.5rem auto;
   display: flex;
@@ -10,20 +10,11 @@
   font-family: "DM Sans", sans-serif;
 }
 
-.wrapperContainer {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .story_wrapper {
+  width: 100%;
   height: fit-content;
-  width: 96%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  row-gap: 1rem; 
 }
 
 .buttons {
@@ -40,6 +31,7 @@
   transition: scale 100ms;
   cursor: pointer;
 }
+
 .buttons:hover {
   scale: 1.1;
 }

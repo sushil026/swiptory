@@ -1,10 +1,11 @@
 .story {
   margin: auto;
   background: #e9d3d3;
-  width: 17%;
+  width: 19rem;
   height: 30rem;
   border-radius: 1rem;
   position: relative;
+  margin: 1.2rem;
 }
 
 .story_desc {
@@ -24,7 +25,6 @@
   .story {
     width: 85%;
     height: 30rem;
-    /* aspect-ratio: 9/16; */
   }
 
 }
