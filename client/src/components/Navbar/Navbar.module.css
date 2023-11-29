@@ -24,8 +24,15 @@
   gap: 0.5rem;
 }
 
-.logged img:hover {
-  scale: 1.1;
+.dp{
+  height: 3.5rem;
+  width: 3.5rem;
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.dp:hover {
+  scale: 1.4;
 }
 
 .logoutMenu {
@@ -57,6 +64,7 @@
   scale: 1;
   transition: scale 100ms;
   cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
 .hamburger {
@@ -85,7 +93,9 @@
 }
 
 .credits {
+  width: 50%;
   display: flex;
+  justify-content: space-evenly;
   align-items: center;
 }
 
@@ -96,7 +106,7 @@
 
 @media only screen and (max-width: 768px) {
   .navbar {
-    padding: 1rem 1rem;
+    padding: 0.5rem 1rem;
   }
 
   .btns,

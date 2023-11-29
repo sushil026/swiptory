@@ -86,9 +86,9 @@
   right: 1.8rem;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 480px) {
   .form {
-    font-size: medium;
+    font-size: small;
     height: 40%;
     justify-content: space-around;
     margin: 0 10%;

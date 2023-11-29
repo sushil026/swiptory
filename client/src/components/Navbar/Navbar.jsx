@@ -4,11 +4,11 @@ import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import cross from "../../assets/cross.svg";
-import dp from "../../assets/Mask-group.png";
 import hamburger from "../../assets/hamburger.svg";
 import bookmark from "../../assets/bookmark.svg";
 import nbStyle from "./Navbar.module.css";
 import RegisterLoginForm from "../RegisterLoginForm/RegisterLoginForm";
+import AddStory from "../AddStory/AddStory";
 import { UserContext } from "../../UserContext";
 
 const Button = ({ text, background, icon, onClick }) => (
@@ -18,19 +18,19 @@ const Button = ({ text, background, icon, onClick }) => (
   </div>
 );
 
-const HamburgerMenu = ({ isLoggedIn, username, onButtonClick, onLogout, closeMenu }) => (
+const HamburgerMenu = ({ isLoggedIn, username, onButtonClick, onLogout, closeMenu, onAddStory}) => (
   <>
     {isLoggedIn ? (
       <div className={nbStyle.hamburgerMenu}>
         <div className={nbStyle.credits}>
-          <img src={dp} alt="User DP" />
+          <img src='https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/2f/2fd800e948d44ff71d9de275faef6a6a9cc3461c_full.jpg' alt="User DP" className={nbStyle.dp} />
           <h3>{username}</h3>
         </div>
         <Button text="Your Story" />
         <Link to="/bookmarks" className={nbStyle.links}>
           <Button icon={bookmark} text="&nbsp;Bookmarks" onClick={closeMenu} />
         </Link>
-        <Button text="Add Story" />
+        <Button text="Add Story" onClick={onAddStory} />
         <Button text="Logout" onClick={onLogout} />
       </div>
     ) : (
@@ -62,6 +62,7 @@ export default function Navbar() {
   const [logoutMenu, setLogoutMenu] = useState(false);
   const [registerOrLogin, setRegisterOrLogin] = useState(null);
   const { username, setUsername, setId } = useContext(UserContext);
+  const [isAddStoryFormOpen, setIsAddStoryFormOpen] = useState(false);
   const isLoggedIn = username ? true : false;
   const navigate = useNavigate();
 
@@ -90,6 +91,11 @@ export default function Navbar() {
     setIsMenuOpen(false);
   };
 
+  const handleAddStory = () => {
+    setIsAddStoryFormOpen(true);
+    setIsMenuOpen(false);
+  };
+
   function toaster() {
     toast.error(username + " logged out successfully", {
       position: toast.POSITION.BOTTOM_LEFT,
@@ -106,9 +112,12 @@ export default function Navbar() {
             <Link to="/bookmarks" className={nbStyle.links}>
               <Button icon={bookmark} text="&nbsp;Bookmarks" />
             </Link>
-            <Button text="Add Story" />
+            <Button
+              text="Add Story"
+              onClick={() => setIsAddStoryFormOpen(true)}
+            />
           </div>
-          <img src={dp} alt="dp" onClick={() => setLogoutMenu(!logoutMenu)} />
+          <img src='https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/2f/2fd800e948d44ff71d9de275faef6a6a9cc3461c_full.jpg' alt="dp" className={nbStyle.dp} onClick={() => setLogoutMenu(!logoutMenu)} />
         </div>
       ) : (
         <div className={nbStyle.btns}>
@@ -145,6 +154,7 @@ export default function Navbar() {
           onLogout={handleLogout}
           onButtonClick={handleButtonClick}
           closeMenu={closeMenu}
+          onAddStory={handleAddStory}
         />
       )}
 
@@ -160,7 +170,10 @@ export default function Navbar() {
         formType={registerOrLogin}
         open={() => setRegisterOrLogin(null)}
       />
+
+      {isAddStoryFormOpen && (
+        <AddStory open={() => setIsAddStoryFormOpen(false)} />
+      )}
     </div>
   );
 }
-

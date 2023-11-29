@@ -2,8 +2,8 @@ import axios from "axios";
 import { UserContextProvider } from "./UserContext";
 import { ToastContainer } from "react-toastify";
 import Navbar from "./components/Navbar/Navbar.jsx";
-import Home from "./components/Pages/Home.jsx";
-import Bookmark from "./components/Pages/Bookmark.jsx";
+import Home from "./Pages/Home.jsx";
+import Bookmark from "./Pages/Bookmark.jsx";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 axios.defaults.baseURL = "http://localhost:4000";
