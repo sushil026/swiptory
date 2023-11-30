@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import bmStyle from "./Bookmark.module.css";
-import Story from "../components/Story/Story";
+import myStoryStyle from "./YourStories.module.css";
+import Story from "../../components/Story/Story";
 
-const Bookmark = () => {
+export default function YourStories () {
   const quotes = [
     {
       quoter: "Albert Einstein",
@@ -47,28 +47,28 @@ const Bookmark = () => {
     // },
   ];
 
-  const bookmarks = !true;
+  const storiesAvailable = !true;
   return (
-    <div className={bmStyle.bookmark}>
-      <h1>Your Bookmarks</h1>
-      {!bookmarks ? (
-        <div className={bmStyle.empty}>
-          <h3>You have no bookmarks!</h3>
-          <Link to="/" className={bmStyle.links}>
-            <div className={bmStyle.buttons}>
+    <div className={myStoryStyle.library}>
+      <h1>Your Stories</h1>
+      {!storiesAvailable ? (
+        <div className={myStoryStyle.empty}>
+          <h3>You have not added any stories yet!</h3>
+          <Link to="/" className={myStoryStyle.links}>
+            <div className={myStoryStyle.buttons}>
               <p>Home</p>
             </div>
           </Link>
         </div>
       ) : (
-        <div className={bmStyle.bmFeeds}>
-          <div className={bmStyle.storyWrapper}>
+        <div className={myStoryStyle.stories}>
+          <div className={myStoryStyle.storyWrapper}>
             {quotes.map((qt, index) => (
               <Story key={index} quoter={qt.quoter} quote={qt.quote} />
             ))}
           </div>
-          <Link to="/" className={bmStyle.links}>
-            <div className={bmStyle.buttons}>
+          <Link to="/" className={myStoryStyle.links}>
+            <div className={myStoryStyle.buttons}>
               <p>Home</p>
             </div>
           </Link>
@@ -77,5 +77,3 @@ const Bookmark = () => {
     </div>
   );
 };
-
-export default Bookmark;

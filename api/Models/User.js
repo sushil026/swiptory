@@ -10,6 +10,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  bookmarks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Story',
+    }
+  ],
+  stories: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Story',
+    }
+  ],
 }, {timestamps: true});
 
 const User = mongoose.model('User', userSchema);

@@ -3,161 +3,278 @@ import storyFormStyle from "./AddStory.module.css";
 import cut from "../../assets/cut.svg";
 import add from "../../assets/add.svg";
 import minus from "../../assets/minus.svg";
-import post from '../../assets/post.svg';
-import next from '../../assets/next.svg';
-import previous from '../../assets/previous.svg';
+import post from "../../assets/post.svg";
+import next from "../../assets/next.svg";
+import previous from "../../assets/previous.svg";
+import save from "../../assets/save.svg";
+import { toast } from "react-toastify";
 
 const AddStory = ({ open }) => {
-  const [formState, setFormState] = useState({
-    heading: "",
-    description: "",
-    imageUrl: "",
+  const [album, setAlbum] = useState({
     category: "",
+    stories: [
+      { imageUrl: "", title: "", description: "", category: "" },
+      { imageUrl: "", title: "", description: "", category: "" },
+      { imageUrl: "", title: "", description: "", category: "" },
+    ],
   });
 
-  const [errors, setErrors] = useState({
-    wordCount: false,
-    headingLength: false,
-    image: false,
-    field: false,
-  });
+  const [errors, setErrors] = useState([
+    { imageUrl: false, title: false, description: false, category: false },
+    { imageUrl: false, title: false, description: false, category: false },
+    { imageUrl: false, title: false, description: false, category: false },
+  ]);
 
-  const [imageLoaded, setImageLoaded] = useState(true);
+  const [slideInFocus, setSlideInFocus] = useState(0);
+  const [numSlidesAvailable, setNumSlidesAvailable] = useState(3);
+  const [numSlidesFilled, setNumSlidesFilled] = useState(0);
 
-  const [inFocus, setInFocus] = useState(0);
-  const categories = ["Food", "Health & Fitness", "Travel", "Education"];
+  const categories = [
+    "Food",
+    "Health & Fitness",
+    "Travel",
+    "Movies",
+    "Education",
+  ];
 
-  const validateHeading = (value) => {
-    return value.length > 20;
-  };
-
-  const validateDescription = (value) => {
-    const words = value.trim().split(/\s+/);
-    return words.length > 20;
+  const validateTitle = (title) => title.length <= 20;
+  const validateDescription = (description) => {
+    const words = description.split(/\s+/);
+    return words.length <= 10;
   };
 
   const handleChange = (e, field) => {
-    const { value } = e.target;
+    const newAlbum = { ...album };
+    const newErrors = [...errors];
 
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      field: false,
-    }));
+    const value = e.target.value;
+    if (field === "category") {
+      newAlbum[field] = value;
+      newAlbum.stories.forEach((slide, slideIndex) => {
+        if (slideIndex === slideInFocus) {
+          slide[field] = value;
+        }
+      });
+    } else {
+      newAlbum.stories[slideInFocus][field] = value;
+    }
+    newErrors[slideInFocus][field] = !validateField(value, field);
+    setAlbum(newAlbum);
+    setErrors(newErrors);
+  };
 
-    setFormState((prevState) => ({
-      ...prevState,
-      [field]: value,
-    }));
-
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [field]: false,
-    }));
-
-    if (field === "heading") {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        headingLength: validateHeading(value),
-      }));
-    } else if (field === "description") {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        wordCount: validateDescription(value),
-      }));
+  const validateField = (value, field) => {
+    switch (field) {
+      case "title":
+        return validateTitle(value);
+      case "description":
+        return validateDescription(value);
+      default:
+        return true;
     }
   };
 
-  const checkImageExists = () => {
-    setImageLoaded(false);
-    const img = new Image();
-    img.src = formState.imageUrl;
-    img.onload = () => {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        image: false,
-      }));
+  const handleBlur = (field) => {
+    performValidation(slideInFocus, field);
+  };
+
+  const [imageLoaded, setImageLoaded] = useState(!true);
+
+  const checkImageExists = async () => {
+    const newErrors = [...errors];
+    newErrors[slideInFocus].image = false;
+
+    const loadImage = (src) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => resolve(true);
+        img.onerror = () => reject(false);
+      });
+    };
+    try {
+      await loadImage(album.stories[slideInFocus].imageUrl);
       setImageLoaded(true);
-    };
-    img.onerror = () => {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        image: true,
-      }));
-    };
+    } catch (error) {
+      setImageLoaded(false);
+    }
+
+    return imageLoaded;
   };
 
-  const handleSubmit = () => {
-    const { heading, description, imageUrl, category } = formState;
-    setErrors((prevErrors) => ({ ...prevErrors, field: false }));
-    if (!heading || !description || !imageUrl || !category) {
-      setErrors((prevErrors) => ({ ...prevErrors, field: true }));
-      console.log("mpt fields");
-      return;
+  const performValidation = (index, field) => {
+    const newErrors = [...errors];
+    const slide = album.stories[index];
+
+    switch (field) {
+      case "title":
+        newErrors[index].title = !validateTitle(slide.title);
+        break;
+      case "description":
+        newErrors[index].description = !validateDescription(slide.description);
+        break;
+      case "category":
+        newErrors[index].category = !slide.category;
+        break;
+      case "imageUrl":
+        newErrors[index].imageUrl = !checkImageExists(slide.imageUrl);
+        break;
+      default:
+        break;
     }
-    if (
-      errors.field ||
-      errors.headingLength ||
-      errors.wordCount ||
-      !imageLoaded
-    ) {
-      console.log("some error");
-      return;
-    }
-    savingStory();
+    setErrors(newErrors);
   };
 
-  const savingStory =()=>{
-    console.log('saving')
-  }
-
-
-  const [visibleCards, setVisibleCards] = useState(3);
-
-  const openCard = () => {
-    if (visibleCards < 6) {
-      setVisibleCards(visibleCards + 1);
-    }
-  };
-
-  const gotoNextCard = () => {
-    if (inFocus + 1 < visibleCards) {
-      setInFocus(inFocus + 1);
-    }
-  };
-
-  const gotoPreviousCard = () => {
-    if (inFocus > 0) {
-      setInFocus(inFocus - 1);
-    }
-  };
-
-  const selectCard = (index) => {
-    if (index < visibleCards) {
-      setInFocus(index);
+  const handleAddSlide = () => {
+    if (numSlidesAvailable < 6) {
+      setAlbum({
+        ...album,
+        stories: [
+          ...album.stories,
+          {
+            imageUrl: "",
+            title: "",
+            description: "",
+            category: album.category,
+          },
+        ],
+      });
+      setErrors([
+        ...errors,
+        { imageUrl: false, title: false, description: false, category: false },
+      ]);
+      setNumSlidesAvailable((prevNumSlides) => prevNumSlides + 1);
     }
   };
 
-  const closeCard = () => {
-    if( inFocus === visibleCards-1){
-      setInFocus(visibleCards-2)
+  const handleRemoveSlide = () => {
+    if (numSlidesAvailable > 3) {
+      const newAlbum = { ...album };
+      const newErrors = [...errors];
+
+      newAlbum.stories.pop();
+      newErrors.pop();
+
+      setAlbum(newAlbum);
+      setErrors(newErrors);
+      setNumSlidesAvailable((prevNumSlides) => prevNumSlides - 1);
+
+      setNumSlidesFilled((prevNumSlides) => Math.max(0, prevNumSlides - 1));
+
+      if (slideInFocus >= numSlidesAvailable - 1) {
+        setSlideInFocus(numSlidesAvailable - 2);
+      }
     }
-    setVisibleCards(visibleCards - 1);
+  };
+
+  const handlePreviousSlide = () => {
+    if (slideInFocus > 0) {
+      setSlideInFocus((prevIndex) => prevIndex - 1);
+      performValidation(slideInFocus - 1);
+    }
+  };
+
+  const handleNextSlide = () => {
+    if (slideInFocus < numSlidesAvailable - 1) {
+      setSlideInFocus((prevIndex) => prevIndex + 1);
+      performValidation(slideInFocus + 1);
+    }
+  };
+  const savingToAlbum = (index) => {
+    const newAlbum = { ...album };
+    newAlbum.stories[index] = { ...album.stories[index] };
+    setAlbum(newAlbum);
+  };
+
+  const saveToAlbum = (e) => {
+    e.preventDefault();
+    const isValid =
+      validateTitle(album.stories[slideInFocus].title) &&
+      validateDescription(album.stories[slideInFocus].description);
+
+    if (isValid) {
+      const hasErrors =
+        errors[slideInFocus].title ||
+        errors[slideInFocus].description ||
+        errors[slideInFocus].category;
+
+      if (!hasErrors) {
+        const newAlbum = { ...album };
+        newAlbum.stories[slideInFocus] = { ...album.stories[slideInFocus] };
+        setAlbum(newAlbum);
+        setNumSlidesFilled(numSlidesFilled + 1);
+        console.log("Success");
+        setNumSlidesFilled(numSlidesFilled + 1);
+        savingToAlbum(slideInFocus);
+      }
+    } else {
+      const newErrors = [...errors];
+      newErrors[slideInFocus] = {
+        title: !validateTitle(album.stories[slideInFocus].title),
+        description: !validateDescription(
+          album.stories[slideInFocus].description
+        ),
+        category: !album.stories[slideInFocus].category,
+      };
+      setErrors(newErrors);
+      console.log(
+        `Invalid data for Slide ${
+          slideInFocus + 1
+        }. Please check the input fields.`
+      );
+    }
+  };
+  console.log(numSlidesFilled)
+
+  const postStory = async () => {
+    console.log("posting");
+    // try {
+    //   // Assuming your backend endpoint is '/api/postStory'
+    //   const response = await fetch('/api/postStory', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       // You may need to include additional headers like authorization if required
+    //     },
+    //     body: JSON.stringify(album),
+    //   });
+
+    //   if (response.ok) {
+    //     console.log('Album posted successfully!');
+    //   } else {
+    //     console.error('Failed to post album:', response.statusText);
+    //   }
+    // } catch (error) {
+    //   console.error('Error posting album:', error.message);
+    // }
   };
 
   return (
     <div className={storyFormStyle.modal}>
       <div className={storyFormStyle.modalOverlay} onClick={open}></div>
       <div className={storyFormStyle.form}>
+        {numSlidesFilled < 3 && (
+          <label
+            className={storyFormStyle.warningLabel}
+            style={{ padding: "1rem 0" }}
+          >
+            Minimum 3 slides required
+          </label>
+        )}
         <div className={storyFormStyle.contentContainer}>
           <div className={storyFormStyle.slides}>
-            {[...Array(visibleCards)].map((_, index) => (
-              <div key={index} className={storyFormStyle.cardWrapper} style={{
-                boxShadow: inFocus === index ? "0px 0px 0px 2px #73ABFF" : "",
-              }}>
+            {[...Array(numSlidesAvailable)].map((_, index) => (
+              <div
+                key={index}
+                className={storyFormStyle.cardWrapper}
+                style={{
+                  boxShadow:
+                    slideInFocus === index ? "0px 0px 0px 2px #73ABFF" : "",
+                }}
+              >
                 <div
                   className={storyFormStyle.cards}
-                  onClick={() => selectCard(index)}
-                  
+                  onClick={() => setSlideInFocus(index)}
                 >
                   Slide {index + 1}
                 </div>
@@ -166,17 +283,18 @@ const AddStory = ({ open }) => {
                     src={minus}
                     alt="cut"
                     className={storyFormStyle.minusIcon}
-                    onClick={() => closeCard()}
+                    onClick={handleRemoveSlide}
                   />
                 )}
               </div>
             ))}
             <div
               className={storyFormStyle.addButton}
-              onClick={openCard}
+              onClick={handleAddSlide}
               style={{
-                background: visibleCards === 6 ? "hsl(0deg 0% 94.9%)" : "",
-                cursor: visibleCards === 6 ? "crosshair" : "pointer",
+                background:
+                  numSlidesAvailable === 6 ? "hsl(0deg 0% 94.9%)" : "",
+                cursor: numSlidesAvailable === 6 ? "crosshair" : "pointer",
               }}
             >
               <img src={add} alt="add" />
@@ -188,40 +306,42 @@ const AddStory = ({ open }) => {
               <h4>Title</h4>
               <input
                 type="text"
-                value={formState.heading}
+                value={album.stories[slideInFocus].title}
                 placeholder="Enter Title"
-                onChange={(e) => handleChange(e, "heading")}
+                onChange={(e) => handleChange(e, "title")}
+                onBlur={() => handleBlur("title")}
               />
             </div>
-            {errors.headingLength && (
+            {errors[slideInFocus].title && (
               <label className={storyFormStyle.warningLabel}>
-                Maximum 20 characters allowed for the heading
+                Title must be 20 characters or less
               </label>
             )}
             <div className={storyFormStyle.inputs}>
               <h4>Description</h4>
               <textarea
-                value={formState.description}
+                value={album.stories[slideInFocus].description}
                 placeholder="Enter description"
                 onChange={(e) => handleChange(e, "description")}
+                onBlur={() => handleBlur("description")}
               />
             </div>
-            {errors.wordCount && (
+            {errors[slideInFocus].description && (
               <label className={storyFormStyle.warningLabel}>
-                Maximum 20 words allowed
+                Description must be 10 words or less
               </label>
             )}
             <div className={storyFormStyle.inputs}>
               <h4>Image URL</h4>
               <input
                 type="text"
-                value={formState.imageUrl}
+                value={album.stories[slideInFocus].imageUrl}
                 placeholder="Enter image URL"
                 onChange={(e) => handleChange(e, "imageUrl")}
-                onBlur={checkImageExists}
+                onBlur={() => handleBlur("imageUrl")}
               />
             </div>
-            {errors.image && (
+            {errors[slideInFocus].imageUrl && (
               <label className={storyFormStyle.warningLabel}>
                 Invalid image URL
               </label>
@@ -229,10 +349,9 @@ const AddStory = ({ open }) => {
             <div className={storyFormStyle.inputs}>
               <h4>Category</h4>
               <select
-                value={formState.category}
-                onChange={(e) =>
-                  setFormState({ ...formState, category: e.target.value })
-                }
+                value={album.category}
+                onChange={(e) => handleChange(e, "category")}
+                onBlur={() => handleBlur("category")}
               >
                 <option value="" disabled>
                   Select Category
@@ -244,9 +363,9 @@ const AddStory = ({ open }) => {
                 ))}
               </select>
             </div>
-            {errors.field && (
+            {errors[slideInFocus].category && (
               <label className={storyFormStyle.warningLabel}>
-                Please fill all the fields
+                Category is required
               </label>
             )}
           </div>
@@ -254,24 +373,42 @@ const AddStory = ({ open }) => {
 
         <div className={storyFormStyle.buttonContainer}>
           <div
-            className={storyFormStyle.buttons}
-            style={{ background: "#7EFF73" }}
-            onClick={gotoPreviousCard}
+            className={`${storyFormStyle.buttons} ${storyFormStyle.prevButton}`}
+            style={{
+              background: "#7EFF73",
+              pointerEvents: slideInFocus === 0 ? "none" : "auto",
+            }}
+            onClick={handlePreviousSlide}
           >
-            <img src={previous} alt="previous" className={storyFormStyle.icons} />
+            <img
+              src={previous}
+              alt="previous"
+              className={storyFormStyle.icons}
+            />
             <p>Previous</p>
           </div>
           <div
             className={storyFormStyle.buttons}
-            style={{ background: "#73ABFF" }}
-            onClick={gotoNextCard}
+            style={{
+              background: "#73ABFF",
+              pointerEvents:
+                slideInFocus === numSlidesAvailable - 1 ? "none" : "auto",
+            }}
+            onClick={handleNextSlide}
           >
-          <img src={next} alt="next" className={storyFormStyle.icons} />
+            <img src={next} alt="next" className={storyFormStyle.icons} />
             <p>Next</p>
           </div>
-          <div className={storyFormStyle.buttons} onClick={handleSubmit}>
-            <img src={post} alt="post" className={storyFormStyle.icons} />
-            <p>Post</p>
+          <div
+            className={storyFormStyle.buttons}
+            onClick={numSlidesFilled <= 2 ? saveToAlbum : postStory}
+          >
+            <img
+              src={numSlidesFilled <= 2 ? save : post}
+              alt="post"
+              className={storyFormStyle.icons}
+            />
+            <p>{numSlidesFilled <= 2 ? "Save Slide" : "Post"}</p>
           </div>
         </div>
         <div className={storyFormStyle.cut} onClick={open}>
@@ -283,3 +420,7 @@ const AddStory = ({ open }) => {
 };
 
 export default AddStory;
+
+//   function toaster() {
+//     toast.error("Story Shared", { position: toast.POSITION.TOP_CENTER, icon: ""});
+//   }

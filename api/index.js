@@ -48,6 +48,11 @@ app.get("/profile", (req, res) => {
 app.post("/register", async (req, res) => {
   const { username, password } = req.body;
   try {
+
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ error: "Username already exists" });
+    }
     const hashedPassword = bcrypt.hashSync(password, bcrypt_salt);
     const newPayload = await User.create({
       username,
@@ -69,13 +74,19 @@ app.post("/login", async (req, res) => {
   try {
     const targetedUser = await User.findOne({ username });
     if (targetedUser) {
-      if (bcrypt.compareSync(password , targetedUser.password)) {
+      if (bcrypt.compareSync(password, targetedUser.password)) {
         const token = jwt.sign({ userId: targetedUser._id, username }, jwtSecret, {});
-        res.cookie("token", token, { sameSite: "none", secure: "true" });
+        res.cookie("token", token, { sameSite: "none", secure: true });
         res.status(201).json({
           id: targetedUser._id,
         });
+      } else {
+        // Password doesn't match
+        res.status(401).json({ error: "PasswordMismatch" });
       }
+    } else {
+      // Username not found
+      res.status(404).json({ error: "UsernameNotFound" });
     }
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });

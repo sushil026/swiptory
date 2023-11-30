@@ -18,15 +18,28 @@ const Button = ({ text, background, icon, onClick }) => (
   </div>
 );
 
-const HamburgerMenu = ({ isLoggedIn, username, onButtonClick, onLogout, closeMenu, onAddStory}) => (
+const HamburgerMenu = ({
+  isLoggedIn,
+  username,
+  onButtonClick,
+  onLogout,
+  closeMenu,
+  onAddStory,
+}) => (
   <>
     {isLoggedIn ? (
       <div className={nbStyle.hamburgerMenu}>
         <div className={nbStyle.credits}>
-          <img src='https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/2f/2fd800e948d44ff71d9de275faef6a6a9cc3461c_full.jpg' alt="User DP" className={nbStyle.dp} />
+          <img
+            src="https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/2f/2fd800e948d44ff71d9de275faef6a6a9cc3461c_full.jpg"
+            alt="User DP"
+            className={nbStyle.dp}
+          />
           <h3>{username}</h3>
         </div>
-        <Button text="Your Story" />
+        <Link to="/my-stories" className={nbStyle.links}>
+          <Button text="Your Story" onClick={closeMenu}/>
+        </Link>
         <Link to="/bookmarks" className={nbStyle.links}>
           <Button icon={bookmark} text="&nbsp;Bookmarks" onClick={closeMenu} />
         </Link>
@@ -117,7 +130,12 @@ export default function Navbar() {
               onClick={() => setIsAddStoryFormOpen(true)}
             />
           </div>
-          <img src='https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/2f/2fd800e948d44ff71d9de275faef6a6a9cc3461c_full.jpg' alt="dp" className={nbStyle.dp} onClick={() => setLogoutMenu(!logoutMenu)} />
+          <img
+            src="https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/2f/2fd800e948d44ff71d9de275faef6a6a9cc3461c_full.jpg"
+            alt="dp"
+            className={nbStyle.dp}
+            onClick={() => setLogoutMenu(!logoutMenu)}
+          />
         </div>
       ) : (
         <div className={nbStyle.btns}>

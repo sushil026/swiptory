@@ -18,19 +18,56 @@ const RegisterLoginForm = ({ formType, open }) => {
   async function handleSubmit(event) {
     event.preventDefault();
     const url = formType === "register" ? "register" : "login";
-    const { data } = await axios.post(url, { username, password });
-    setUsername(username);
-    setId(data.id);
-    setFormUsername("");
-    setPassword("");
-    toaster(formType);
-    open();
+    try {
+      const response = await axios.post(url, { username, password });
+      setUsername(username);
+      setId(response.data.id);
+      setFormUsername("");
+      setPassword("");
+      toaster(formType);
+      open();
+    } catch (error) {
+      if (error.response){
+        if( error.response.status === 400){
+          toaster("register", 400);
+        } else if( error.response.status === 401){
+          toaster("login", 401);
+        } else if( error.response.status === 404){
+          toaster("login", 404);
+        }
+      }
+    }
   }
-  function toaster(action) {
-    action === "register"
-      ? toast.error(username + " registered successfully", { position: toast.POSITION.TOP_CENTER, icon: ''})
-      : toast.info(username + " signed in successfully", { position: toast.POSITION.TOP_CENTER, icon: '' });
+  
+  function toaster(action, isBadRequest) {
+    if (isBadRequest === 400) {
+      toast.error("User already exists", {
+        position: toast.POSITION.TOP_CENTER,
+        icon: "",
+      });
+    } else if (isBadRequest === 404) {
+      toast.error("User not found", {
+        position: toast.POSITION.TOP_CENTER,
+        icon: "",
+      });
+    } else if (isBadRequest === 401) {
+      toast.error("Wrong password", {
+        position: toast.POSITION.TOP_CENTER,
+        icon: "",
+      });
+    } else {
+      action === "register"
+        ? toast.error(username + " registered successfully", {
+            position: toast.POSITION.TOP_CENTER,
+            icon: "",
+          })
+        : toast.info(username + " signed in successfully", {
+            position: toast.POSITION.TOP_CENTER,
+            icon: "",
+          });
+    }
   }
+  
 
   if (formType === null) {
     return null;

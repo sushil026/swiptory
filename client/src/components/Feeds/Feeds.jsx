@@ -71,7 +71,7 @@ export default function Feeds() {
                   <Story key={index} quoter={qt.quoter} quote={qt.quote} />
                 ))
               : quotes
-                  .slice(0, 2)
+                  .slice(0, 5)
                   .map((qt, index) => (
                     <Story key={index} quoter={qt.quoter} quote={qt.quote} />
                   ))}

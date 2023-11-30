@@ -123,6 +123,7 @@
 }
 
 .warningLabel {
+  text-align: center;
   color: red;
   font-size: medium;
 }
@@ -131,11 +132,14 @@
   letter-spacing: 0.05rem;
   font-size: large;
   text-align: center;
-  width: 5rem;
+  width: 7rem;
   background: #ff7373;
   color: rgb(255, 255, 255);
   text-shadow: 0 0 0.8rem #000;
   padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 4rem;
   scale: 1;
   transition: scale 100ms;
