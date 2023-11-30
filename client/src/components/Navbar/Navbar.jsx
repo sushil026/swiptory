@@ -91,7 +91,7 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    axios.post("/logout");
+    axios.post("/auth/logout");
     setId(null);
     toaster();
     setUsername(null);

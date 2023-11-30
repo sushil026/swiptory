@@ -7,7 +7,7 @@ import Bookmark from "./Pages/Bookmark.jsx";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import YourStories from "./Pages/YourStories/YourStories.jsx";
 
-axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.baseURL = "http://localhost:4040";
 axios.defaults.withCredentials = true;
 
 export default function App() {

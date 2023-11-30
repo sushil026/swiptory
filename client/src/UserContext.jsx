@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import axios from 'axios'
+import axios from 'axios';
 
 export const UserContext = createContext({});
 
@@ -9,10 +9,18 @@ export function UserContextProvider({ children }) {
   const [id, setId] = useState(null);
 
   useEffect(() => {
-    axios.get('/profile').then(response => {
-      setId(response.data.userId);
-      setUsername(response.data.username);
-    })
+    const fetchUserProfile = async () => {
+      try {
+        const response = await axios.get('/auth/profile');
+        setId(response.data.userId);
+        setUsername(response.data.username);
+      } catch (error) {
+        // Handle error, e.g., log it or set default values
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    fetchUserProfile();
   }, []);
 
   return (
