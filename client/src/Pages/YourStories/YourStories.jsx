@@ -1,70 +1,93 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import myStoryStyle from "./YourStories.module.css";
 import Story from "../../components/Story/Story";
+import AddStory from "../../components/AddStory/AddStory";
+import { UserContext } from "../../UserContext";
+import ReactLoading from "react-loading";
 
-export default function YourStories () {
-  const quotes = [
-    {
-      quoter: "Albert Einstein",
-      quote:
-        "Life is like riding a bicycle. To keep your balance, you must keep moving.",
-    },
-    {
-      quoter: "Maya Angelou",
-      quote: "We may encounter many defeats but we must not be defeated.",
-    },
-    // {
-    //   quoter: "Walt Disney",
-    //   quote: "The way to get started is to quit talking and begin doing.",
-    // },
-    // {
-    //   quoter: "Oprah Winfrey",
-    //   quote:
-    //     "The biggest adventure you can take is to live the life of your dreams.",
-    // },
-    // {
-    //   quoter: "Mark Twain",
-    //   quote: "The secret of getting ahead is getting started.",
-    // },
-    // {
-    //   quoter: "Helen Keller",
-    //   quote: "Life is either a daring adventure or nothing at all.",
-    // },
-    // {
-    //   quoter: "Steve Jobs",
-    //   quote:
-    //     "Your time is limited, so don't waste it living someone else's life.",
-    // },
-    // {
-    //   quoter: "Eleanor Roosevelt",
-    //   quote:
-    //     "The future belongs to those who believe in the beauty of their dreams.",
-    // },
-    // {
-    //   quoter: "Dr. Seuss",
-    //   quote: "Why fit in when you were born to stand out?",
-    // },
-  ];
+const Loading = () => (
+    <ReactLoading
+      type={"bubbles"}
+      color={"#ff7373"}
+      height={"7%"}
+      width={"7%"}
+    />
+);
 
-  const storiesAvailable = !true;
+const YourStories = () => {
+  const [yourStories, setYourStories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { id } = useContext(UserContext);
+  const [showAddStory, setShowAddStory] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 780);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth > 780);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    const fetchYourStories = async () => {
+      try {
+        const myStoriesResponse = await axios.get("/my-stories/" + id);
+        setYourStories(myStoriesResponse.data.stories);
+      } catch (error) {
+        console.error("Error fetching your stories:", error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchYourStories();
+  }, [id]);
+
+  const [storyId, setStoryId] = useState(null); 
+  const handleEditClick = ( storyId) => {
+    setStoryId(storyId);
+    setShowAddStory(true);
+  };
+
   return (
     <div className={myStoryStyle.library}>
-      <h1>Your Stories</h1>
-      {!storiesAvailable ? (
-        <div className={myStoryStyle.empty}>
-          <h3>You have not added any stories yet!</h3>
-          <Link to="/" className={myStoryStyle.links}>
-            <div className={myStoryStyle.buttons}>
-              <p>Home</p>
-            </div>
-          </Link>
-        </div>
+      {yourStories.length ? <h1>Your Stories</h1> : null}
+      {loading ? (
+        <Loading />
+      ) : !yourStories.length ? (
+        isLargeScreen ? null : (
+          <div className={myStoryStyle.empty}>
+            <h3>You have not added any stories yet!</h3>
+            <Link to="/" className={myStoryStyle.links}>
+              <div className={myStoryStyle.buttons}>
+                <p>Home</p>
+              </div>
+            </Link>
+          </div>
+        )
       ) : (
         <div className={myStoryStyle.stories}>
           <div className={myStoryStyle.storyWrapper}>
-            {quotes.map((qt, index) => (
-              <Story key={index} quoter={qt.quoter} quote={qt.quote} />
+            {yourStories.map((story, index) => (
+              
+              <div key={index} className={myStoryStyle.container}>
+                <Story
+                  title={story.slides[0].title}
+                  description={story.slides[0].description}
+                  imageUrl={story.slides[0].imageUrl}
+                  storyId={story._id}
+                />
+                <button
+                  className={myStoryStyle.editButton}
+                  onClick={() => handleEditClick(story._id)}
+                >
+                  Edit
+                </button>
+              </div>
             ))}
           </div>
           <Link to="/" className={myStoryStyle.links}>
@@ -74,6 +97,15 @@ export default function YourStories () {
           </Link>
         </div>
       )}
+      {showAddStory && (
+        <AddStory
+          open={() => setShowAddStory(false)}
+          type={'update'}
+          storyId= {storyId}
+        />
+      )}
     </div>
   );
 };
+
+export default YourStories;

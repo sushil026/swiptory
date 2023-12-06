@@ -17,6 +17,15 @@
   flex-wrap: wrap;
 }
 
+.noStories{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 16rem;
+  font-size: x-large;
+  color: #7b7070;
+}
+
 .buttons {
   letter-spacing: 0.05rem;
   font-size: larger;
@@ -48,5 +57,10 @@
 @media only screen and (max-width: 480px) {
   .buttons {
     width: 60%; 
+  }
+
+  h2{
+    text-align: center;
+    font-size: x-large;
   }
 }

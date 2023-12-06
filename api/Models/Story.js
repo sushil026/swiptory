@@ -1,7 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const SlideSchema = new mongoose.Schema({
-  heading: {
+const slide = new mongoose.Schema({
+  category: {
+    type: String,
+    required: true,
+  },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+  title: {
     type: String,
     required: true,
   },
@@ -9,31 +17,26 @@ const SlideSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  imgURL: {
-    type: String,
+  likes: {
+    type: Array,
+    default: [],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 
-const Slide = mongoose.model('Slide', SlideSchema);
-
-const StorySchema = new mongoose.Schema({
-  addedBy: {
-    type: mongoose.Schema.Types.ObjectId,
+const storySchema = new mongoose.Schema({
+  creatorId: {
+    type: String,
     required: true,
   },
   category: {
     type: String,
     required: true,
   },
-  likes: {
-    type: Array,
-    default: [],
-  },
-  slides: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Slide',
-  }],
-}, { timestamps: true });
+  slides: [slide],
+});
 
-const Story = mongoose.model('Story', StorySchema);
-module.exports = { Story, Slide };
+module.exports = mongoose.model("Story", storySchema);

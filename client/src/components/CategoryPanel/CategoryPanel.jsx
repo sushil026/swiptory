@@ -1,7 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import cpStyle from "./CategoryPanel.module.css";
 import { UserContext } from "../../UserContext";
-
 
 const All = require("../../assets/categories/all.jpg");
 const Food = require("../../assets/categories/food.jpeg");
@@ -19,7 +18,7 @@ const categories = [
   { title: "Education", url: "url(" + Education + ")" },
 ];
 
-const Category = ({ title, url, setSelectedCategory, selected }) => {
+const Category = ({ title, url, onSelectCategory, selected }) => {
   return (
     <div
       className={cpStyle.card}
@@ -27,7 +26,7 @@ const Category = ({ title, url, setSelectedCategory, selected }) => {
         backgroundImage: url,
         boxShadow: selected ? "0px 0px 0px 4px #73ABFF" : "",
       }}
-      onClick={() => setSelectedCategory(title)}
+      onClick={() => onSelectCategory(title)}
     >
       <span>{title}</span>
     </div>
@@ -35,7 +34,12 @@ const Category = ({ title, url, setSelectedCategory, selected }) => {
 };
 
 const CatagoryPanel = () => {
-  const { selectedCategory, setSelectedCategory} = useContext(UserContext);
+  const { selectedCategory, setSelectedCategory } = useContext(UserContext);
+
+  const selection =  (title) => {
+    setSelectedCategory(title);
+  };
+  
   return (
     <div className={cpStyle.panel}>
       <div className={cpStyle.categoryContainer}>
@@ -44,7 +48,7 @@ const CatagoryPanel = () => {
             key={index}
             title={category.title}
             url={category.url}
-            setSelectedCategory={setSelectedCategory}
+            onSelectCategory={selection}
             selected={selectedCategory === category.title}
           />
         ))}

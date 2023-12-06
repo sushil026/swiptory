@@ -4,8 +4,8 @@ import CatagoryPanel from "../components/CategoryPanel/CategoryPanel";
 export default function Home() {
   return (
     <div>
-      <CatagoryPanel/>
-      <Feeds/>
+      <CatagoryPanel />
+      <Feeds /> 
     </div>
-  )
+  );
 }

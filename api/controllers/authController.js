@@ -1,9 +1,7 @@
-// authController.js
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../Models/User');
 require('dotenv').config();
-
 const jwtSecret = process.env.JWT_SECRET;
 const bcrypt_salt = bcrypt.genSaltSync(10);
 
@@ -65,11 +63,9 @@ const postLogin = async (req, res) => {
           id: targetedUser._id,
         });
       } else {
-        // Password doesn't match
         res.status(401).json({ error: 'PasswordMismatch' });
       }
     } else {
-      // Username not found
       res.status(404).json({ error: 'UsernameNotFound' });
     }
   } catch (error) {
@@ -81,10 +77,33 @@ const postLogout = (req, res) => {
   res.cookie('token', '', { sameSite: 'none', secure: 'true' }).json('ok');
 };
 
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    if (id) {
+      const targetUser = await User.findOne({ _id: id });
+      if (targetUser) {
+        res.status(200).json({
+          success: true,
+          message: "User data fetched successfully",
+          user: targetUser,
+        });
+      }
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getAuthRoutes,
   getProfile,
   postRegister,
   postLogin,
   postLogout,
+  getUserById
 };

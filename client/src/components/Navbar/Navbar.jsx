@@ -91,7 +91,7 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    axios.post("/auth/logout");
+    axios.post("/logout");
     setId(null);
     toaster();
     setUsername(null);
@@ -190,7 +190,7 @@ export default function Navbar() {
       />
 
       {isAddStoryFormOpen && (
-        <AddStory open={() => setIsAddStoryFormOpen(false)} />
+        <AddStory open={() => setIsAddStoryFormOpen(false)} type={"post"}/>
       )}
     </div>
   );

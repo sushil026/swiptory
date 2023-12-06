@@ -1,5 +1,5 @@
-.library{
-  padding:  2rem 0;
+.library {
+  padding: 2rem 0;
   width: 100%;
   height: fit-content;
   display: flex;
@@ -8,30 +8,27 @@
   font-family: "DM Sans", sans-serif;
   font-size: larger;
   letter-spacing: 0.05rem;
-  text-shadow: 0 0 0.8rem #6a6a6a;
 }
 
-.empty{
+.empty {
   margin: 2rem;
-  background: #73ABFF;
-  width: 20%;
+  width: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
   padding: 3rem 0;
-  color: white;
+  color: rgb(137, 137, 137);
   font-size: large;
   border-radius: 3rem;
-  text-shadow: 0 0 0.8rem #0a0a0a;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-h3{
+h3 {
   text-align: center;
 }
 
 .buttons {
+  display: none;
   letter-spacing: 0.05rem;
   font-size: large;
   text-align: center;
@@ -47,12 +44,12 @@ h3{
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
-.links{
+.links {
   text-decoration: none;
   color: inherit;
 }
 
-.stories{
+.stories {
   margin: 2rem;
   width: 90%;
   height: fit-content;
@@ -65,11 +62,48 @@ h3{
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+}
+
+.container {
+  position: relative;
+}
+
+.editButton {
+  position: absolute;
+  bottom: 0.1rem;
+  right: 40%;
+  letter-spacing: 0.05rem;
+  font-size: large;
+  text-align: center;
+  width: 5rem;
+  background: white;
+  color: black;
+  text-shadow: 0 0 0.8rem #000;
+  padding: 0.5rem 1rem;
+  border-radius: 4rem;
+  transform: scale(1);
+  transition: transform 100ms;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.buttons:hover {
+  transform: scale(1.1);
 }
 
 @media only screen and (max-width: 768px) {
+  .container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .buttons {
+    display: block;
+  }
 
-  .bookmark{
+  .bookmark {
     font-size: medium;
   }
 
@@ -78,8 +112,11 @@ h3{
     padding-bottom: 2rem;
   }
 
-  .empty{
+  .empty {
+    color: white;
     width: 80%;
+    background: #73abff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 0 0.8rem #0a0a0a;
   }
-  
 }

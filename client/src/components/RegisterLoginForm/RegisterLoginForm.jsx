@@ -17,7 +17,7 @@ const RegisterLoginForm = ({ formType, open }) => {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const url = formType === "register" ? "auth/register" : "auth/login";
+    const url = formType === "register" ? "register" : "login";
     try {
       const response = await axios.post(url, { username, password });
       setUsername(username);
