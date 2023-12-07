@@ -6,7 +6,6 @@ export const StoryProvider = ({ children }) => {
   const [stories, setStories] = useState([]);
   const [storyId, setStoryId] = useState(null);
   const [creatorId, setCreatorId] = useState(null);
-  const [numOfSlides, setNumOfSlides] = useState(null);
   const [currentStorySlides, setCurrentStorySlides] = useState(null);
   useEffect(() => {
     async function fetchStoryById() {

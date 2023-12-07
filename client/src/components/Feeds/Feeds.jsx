@@ -34,11 +34,6 @@ export default function Feeds() {
     const fetchData = async () => {
       try {
         const tempCategoryStories = {};
-        var yrStories = null;
-        if (id) {
-          const myStoriesResponse = await axios.get("/my-stories/" + id);
-          yrStories = myStoriesResponse.data.stories;
-        }
         for (const category of categories) {
           const response = await axios.get(`/${category.api}-stories`);
           if (response.data.stories.length > 0) {
@@ -70,7 +65,7 @@ export default function Feeds() {
       }
     };
     fetchData();
-  }, [id, categories]);
+  }, [id]);
 
   const handleSeeMore = (category) => {
     setShowAllStories((prevShowAll) => ({
@@ -88,8 +83,12 @@ export default function Feeds() {
             <h2>Top stories about {c.title}</h2>
             {categoryStories[c.title] && categoryStories[c.title].length > 0 ? (
               <>
-                <div className={feedStyles.story_wrapper} 
-                style={{ justifyContent: categoryStories[c.title].length < 5 ? 'center' : ''  }}
+                <div
+                  className={feedStyles.story_wrapper}
+                  style={{
+                    justifyContent:
+                      categoryStories[c.title].length < 5 ? "center" : "",
+                  }}
                 >
                   {showAllStories[c.title]
                     ? categoryStories[c.title].map((story, index) => (

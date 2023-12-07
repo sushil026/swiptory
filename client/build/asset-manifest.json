@@ -1,0 +1,40 @@
+{
+  "files": {
+    "main.css": "/static/css/main.2cd3b57b.css",
+    "main.js": "/static/js/main.bdedd080.js",
+    "static/media/noData.gif": "/static/media/noData.7e6ffeebb009f49eddc0.gif",
+    "static/media/food.jpeg": "/static/media/food.afe817a06687b453bae7.jpeg",
+    "static/media/all.jpg": "/static/media/all.c3e9f183ebaabfe5dd3d.jpg",
+    "static/media/travel.jpeg": "/static/media/travel.52099473e2a28d58739d.jpeg",
+    "static/media/education.jpeg": "/static/media/education.e2f8d69fa64126d044c7.jpeg",
+    "static/media/movies.jpeg": "/static/media/movies.36bab8b1d32a8355822e.jpeg",
+    "static/media/health.jpeg": "/static/media/health.2b937ad0f24cb8c9e10d.jpeg",
+    "static/media/not-visible.svg": "/static/media/not-visible.06550080ef2b1ee3521298a05e7e7a9c.svg",
+    "static/media/save.svg": "/static/media/save.a1234f6438e4d0b893824874ac21f3ef.svg",
+    "index.html": "/index.html",
+    "static/media/cut.svg": "/static/media/cut.8849f116a47f971e1149900a6979e160.svg",
+    "static/media/post.svg": "/static/media/post.e9473f89293ac0dcf4272fdd6ed760ab.svg",
+    "static/media/not-liked.svg": "/static/media/not-liked.df958b176e718634548639f9da6a5aae.svg",
+    "static/media/cross.svg": "/static/media/cross.fe549511cf52b86c1ab4e10f46527390.svg",
+    "static/media/cross2.svg": "/static/media/cross2.c39e0b622be03fbd0f53a8cd7fe8525b.svg",
+    "static/media/visible.svg": "/static/media/visible.e79c7e52ca2b639fbd2693b16e95dc80.svg",
+    "static/media/prevSlide.svg": "/static/media/prevSlide.608c0c1321ca95c35305bc93a094fbd3.svg",
+    "static/media/send.svg": "/static/media/send.86791c7f7ed8e0d2138f1c4fa61bbc06.svg",
+    "static/media/bookmark.svg": "/static/media/bookmark.85e84c0245e4ac1e6343f53977247ebf.svg",
+    "static/media/hamburger.svg": "/static/media/hamburger.1e1300047997ae72d5f4d20ad82d6a48.svg",
+    "static/media/not-bookmarked.svg": "/static/media/not-bookmarked.d6cc39ee03d78ef81aa6149366612985.svg",
+    "static/media/nextSlide.svg": "/static/media/nextSlide.9a49c780ce9c9851caabd6efc9bea0b5.svg",
+    "static/media/next.svg": "/static/media/next.e0666876f80b0e01f416a738b135bad8.svg",
+    "static/media/liked.svg": "/static/media/liked.69a5812d18c6c4ca55d73ec036d7b2e8.svg",
+    "static/media/previous.svg": "/static/media/previous.69026c9f56e0e81640b7938cbf0f054f.svg",
+    "static/media/add.svg": "/static/media/add.67d5a5c6c057d2d1d45cee4cd0930f4c.svg",
+    "static/media/bookmarked.svg": "/static/media/bookmarked.a6cd571614f46a538b1d1ce3c27bea6d.svg",
+    "static/media/minus.svg": "/static/media/minus.c49c3ef382c9f37fd691bea22e4a1ce9.svg",
+    "main.2cd3b57b.css.map": "/static/css/main.2cd3b57b.css.map",
+    "main.bdedd080.js.map": "/static/js/main.bdedd080.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2cd3b57b.css",
+    "static/js/main.bdedd080.js"
+  ]
+}

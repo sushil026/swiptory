@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import YourStories from "./Pages/YourStories/YourStories.jsx";
 import { StoryProvider } from "./StoryContext";
 import ViewStory from "./Pages/viewStory/ViewStory.jsx";
+import NotFound from "./Pages/Not-Found/NotFound.jsx";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 axios.defaults.withCredentials = true;
@@ -24,6 +25,7 @@ export default function App() {
             <Route path="/my-stories" element={<YourStories/>} />
             <Route path="/" element={<Home/>} />
             <Route path="/story/:storyId" Component={ViewStory} />
+            <Route path="*" element={<NotFound/>}/>
           </Routes>
         </Router>
       </StoryProvider>

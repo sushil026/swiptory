@@ -12,7 +12,6 @@ const RegisterLoginForm = ({ formType, open }) => {
   const [username, setFormUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-
   const { setUsername, setId } = useContext(UserContext);
 
   async function handleSubmit(event) {
@@ -67,7 +66,6 @@ const RegisterLoginForm = ({ formType, open }) => {
           });
     }
   }
-  
 
   if (formType === null) {
     return null;

@@ -14,6 +14,8 @@ import { UserContext } from "../../UserContext";
 import RegisterLoginForm from "../../components/RegisterLoginForm/RegisterLoginForm";
 import { useParams, useNavigate } from "react-router-dom";
 import ReactLoading from "react-loading";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Loading = () => (
   <ReactLoading
@@ -40,7 +42,7 @@ const ViewStory = () => {
 
   useEffect(() => {
     clicked(storyId);
-  }, [storyId]);
+  }, [storyId, clicked]);
 
   useEffect(() => {
     slideRendered(null);
@@ -70,7 +72,7 @@ const ViewStory = () => {
         clearTimeout(storyTimer);
       }
     };
-  }, [currentIndex]);
+  }, [currentIndex, id, slideRendered, storyId, totalSlides]);
 
   function closingStory() {
     nav(-1);
@@ -142,6 +144,7 @@ const ViewStory = () => {
         (async () => {
           try {
             await navigator.clipboard.writeText(window.location.href);
+            toast.success('Link copied to clipboard',{position: 'top-center', icon: ''})
           } catch (err) {
             console.error("Unable to copy to clipboard:", err);
           }
