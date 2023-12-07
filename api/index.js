@@ -32,7 +32,7 @@ mongoose
     console.log("Failed to connect to MongoDB", error);
   });
 
-app.get("/", async (req, res) => {
+app.get("/health", async (req, res) => {
   res.status(200).json("Server is up and running");
 });
 

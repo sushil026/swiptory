@@ -10,7 +10,7 @@ import { StoryProvider } from "./StoryContext";
 import ViewStory from "./Pages/viewStory/ViewStory.jsx";
 import NotFound from "./Pages/Not-Found/NotFound.jsx";
 
-axios.defaults.baseURL = "https://swiptory-backend-fh5i.onrender.com/api/";
+axios.defaults.baseURL = "http://localhost:5000/api";
 axios.defaults.withCredentials = true;
 
 export default function App() {
