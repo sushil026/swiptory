@@ -3,20 +3,21 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/authRoutes");
-const storyRoutes = require('./routes/storyRoutes');
-const updateRoutes = require('./routes/updateRoutes')
+const storyRoutes = require("./routes/storyRoutes");
+const updateRoutes = require("./routes/updateRoutes");
 require("dotenv").config();
 
 const app = express();
 mongoose.set("strictQuery", true);
 
-app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
     origin: process.env.CLIENT_URL,
+    allowedHeaders: ["Content-Type", "Authorization", "other-header"],
   })
 );
+app.use(cookieParser());
 app.use(express.json());
 
 mongoose
@@ -41,6 +42,6 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-app.use("/api", authRoutes); 
-app.use("/api", storyRoutes); 
-app.use('/api/update', updateRoutes);
+app.use("/api", authRoutes);
+app.use("/api", storyRoutes);
+app.use("/api/update", updateRoutes);
