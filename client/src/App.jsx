@@ -10,7 +10,7 @@ import { StoryProvider } from "./StoryContext";
 import ViewStory from "./Pages/viewStory/ViewStory.jsx";
 import NotFound from "./Pages/Not-Found/NotFound.jsx";
 
-axios.defaults.baseURL = "swiptory-server.vercel.app/api";
+axios.defaults.baseURL = "https://swiptory-server.vercel.app/api";
 axios.defaults.withCredentials = true;
 
 export default function App() {
