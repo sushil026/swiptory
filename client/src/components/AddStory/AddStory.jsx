@@ -47,7 +47,7 @@ const AddStory = ({ open, type, storyId }) => {
     "Education",
   ];
 
-  const validateTitle = (title) => title.length <= 20;
+  const validateTitle = (title) => title.length <= 50;
   const validateDescription = (description) => {
     const words = description.split(/\s+/);
     return words.length <= 30;
@@ -205,7 +205,6 @@ const AddStory = ({ open, type, storyId }) => {
         const newAlbum = { ...album };
         newAlbum.stories[slideInFocus] = { ...album.stories[slideInFocus] };
         setAlbum(newAlbum);
-        console.log("Success");
         if (!numSlidesFilled.includes(slideInFocus)) {
           setNumSlidesFilled((prevFilledSlides) => [
             ...prevFilledSlides,
@@ -294,7 +293,6 @@ const AddStory = ({ open, type, storyId }) => {
   const updateStory = async () => {
     try {
       setIsLoading(true);
-  
       const response = await axios.put(`/update/update-story`, {
         stories: album.stories,
         id: storyId
@@ -395,7 +393,7 @@ const AddStory = ({ open, type, storyId }) => {
               </div>
               {errors[slideInFocus].title && (
                 <label className={storyFormStyle.warningLabel}>
-                  Title must be 20 characters or less
+                  Title must be 30 characters or less
                 </label>
               )}
               <div className={storyFormStyle.inputs}>
@@ -409,7 +407,7 @@ const AddStory = ({ open, type, storyId }) => {
               </div>
               {errors[slideInFocus].description && (
                 <label className={storyFormStyle.warningLabel}>
-                  Description must be 10 words or less
+                  Description must be 20 words or less
                 </label>
               )}
               <div className={storyFormStyle.inputs}>
