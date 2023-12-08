@@ -50,7 +50,7 @@ const AddStory = ({ open, type, storyId }) => {
   const validateTitle = (title) => title.length <= 20;
   const validateDescription = (description) => {
     const words = description.split(/\s+/);
-    return words.length <= 10;
+    return words.length <= 30;
   };
 
   const [isImageUrlValid, setIsImageUrlValid] = useState(true);
@@ -322,7 +322,6 @@ const AddStory = ({ open, type, storyId }) => {
       open();
     }
   };
-  
 
   function toaster(message, type) {
     toast[type](message, { position: toast.POSITION.TOP_CENTER, icon: "" });
