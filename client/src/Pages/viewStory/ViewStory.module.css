@@ -69,7 +69,7 @@
   height: 100%;
   width: 10rem;
   background-color: rgb(201, 199, 199);
-  animation: progressBar 5s linear infinite;
+  animation: progressBar 5s ease infinite;
 }
 .pending {
   background-color: rgba(167, 166, 166, 0.4);
