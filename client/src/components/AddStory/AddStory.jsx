@@ -185,7 +185,6 @@ const AddStory = ({ open, type, storyId }) => {
   const savingToAlbum = (index) => {
     const newAlbum = { ...album };
     newAlbum.stories[index] = { ...album.stories[index] };
-    toaster("Slide saved successfully", "success");
     setAlbum(newAlbum);
   };
 
