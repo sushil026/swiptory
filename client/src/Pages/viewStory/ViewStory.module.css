@@ -69,13 +69,13 @@
   height: 100%;
   width: 10rem;
   background-color: rgb(201, 199, 199);
-  animation: progressBar 2.5s linear infinite;
+  animation: progressBar 5s linear infinite;
 }
 .pending {
-  background-color: rgba(167, 166, 166, 0.4); /* Set the background color for pending slides */
+  background-color: rgba(167, 166, 166, 0.4);
 }
 .complete {
-  background-color: rgb(201, 199, 199); /* Set the background color for completed slides */
+  background-color: rgb(201, 199, 199);
 }
 
 @keyframes progressBar {

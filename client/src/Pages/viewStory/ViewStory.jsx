@@ -63,7 +63,7 @@ const ViewStory = () => {
 
     const storyTimer = setTimeout(() => {
       setCurrentIndex((ind) => (ind === totalSlides - 1 ? 0 : ind + 1));
-    }, 2500);
+    }, 5000);
 
     setLoading(false);
 
