@@ -13,8 +13,8 @@
 .story_wrapper {
   width: 100%;
   height: fit-content;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   background: red;
 }
 
