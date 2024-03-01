@@ -13,7 +13,7 @@ mongoose.set("strictQuery", true);
 app.use(
   cors({
     credentials: true,
-    origin: process.env.CLIENT_URL,
+    origin: "https://swiptory-jade.vercel.app",
     allowedHeaders: ["Content-Type", "Authorization", "other-header"],
   })
 );
